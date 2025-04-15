@@ -1,12 +1,12 @@
-import { rest } from 'msw'
 import { nanoid } from '@reduxjs/toolkit'
+import { rest } from 'msw'
 
 const token = nanoid()
 
 export const handlers = [
   rest.get('/protected', (req, res, ctx) => {
-    const headers = req.headers.all()
-    if (headers.authorization !== `Bearer ${token}`) {
+    const authorization = req.headers.get('authorization')
+    if (authorization !== `Bearer ${token}`) {
       return res(
         ctx.json({
           message: 'You shall not pass. Please login first.',
